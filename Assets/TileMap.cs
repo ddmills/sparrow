@@ -4,8 +4,7 @@
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 public class TileMap : MonoBehaviour {
-  public int sizeX;
-  public int sizeZ;
+  public int chunkSize;
 
   void Start () {
     GenerateMesh();
@@ -14,25 +13,36 @@ public class TileMap : MonoBehaviour {
   public void GenerateMesh() {
     Mesh mesh = new Mesh();
 
-    Vector3[] vertices = new Vector3[(sizeX + 1) * (sizeZ + 1)];
-    int[] triangles = new int[sizeX * sizeZ * 6];
+    Vector3[] vertices = new Vector3[chunkSize * chunkSize * 4];
 
-    for (int i = 0, z = 0; z <= sizeZ; z++) {
-      for (int x = 0; x <= sizeX; x++, i++) {
-        vertices[i] = new Vector3(x, Random.Range(-.2f, .2f), z);
+    int[] triangles = new int[chunkSize * chunkSize * 6];
+    Vector2[] uv = new Vector2[vertices.Length];
+
+    for (int i = 0, v = 0, t = 0; i < chunkSize; i++) {
+      for (int j = 0; j < chunkSize; j++, v += 4, t += 6) {
+        vertices[v] = new Vector3(i, 0, j + 1);
+        vertices[v + 1] = new Vector3(i + 1, 0, j + 1);
+        vertices[v + 2] = new Vector3(i + 1, 0, j);
+        vertices[v + 3] = new Vector3(i, 0, j);
+
+        triangles[t] = triangles[t + 3] = v;
+        triangles[t + 1] = v + 1;
+        triangles[t + 2] = triangles[t + 4] = v + 2;
+        triangles[t + 5] = v + 3;
+
+        float col = Random.Range(0, 2) * .5f;
+        float row = Random.Range(0, 2) * .5f;
+
+        uv[v] = new Vector2(col + 0f, row + .5f);
+        uv[v + 1] = new Vector2(col + .5f, row + .5f);
+        uv[v + 2] = new Vector2(col + .5f, row + 0f);
+        uv[v + 3] = new Vector2(col + 0f, row + 0f);
       }
     }
 
-    for (int i = 0, v = 0, y = 0; y < sizeZ; y++, v++) {
-      for (int x = 0; x < sizeX; x++, i += 6, v++) {
-        triangles[i] = v;
-        triangles[i + 3] = triangles[i + 2] = v + 1;
-        triangles[i + 4] = triangles[i + 1] = v + sizeX + 1;
-        triangles[i + 5] = v + sizeX + 2;
-      }
-    }
 
     mesh.vertices = vertices;
+    mesh.uv = uv;
     mesh.triangles = triangles;
 
     mesh.RecalculateNormals();
