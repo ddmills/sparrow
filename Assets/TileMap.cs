@@ -5,6 +5,7 @@
 [RequireComponent(typeof(MeshRenderer))]
 public class TileMap : MonoBehaviour {
   public int chunkSize;
+  public float textureBleedEpsilon;
 
   void Start () {
     GenerateMesh();
@@ -33,10 +34,10 @@ public class TileMap : MonoBehaviour {
         float col = Random.Range(0, 2) * .5f;
         float row = Random.Range(0, 2) * .5f;
 
-        uv[v] = new Vector2(col + 0f, row + .5f);
-        uv[v + 1] = new Vector2(col + .5f, row + .5f);
-        uv[v + 2] = new Vector2(col + .5f, row + 0f);
-        uv[v + 3] = new Vector2(col + 0f, row + 0f);
+        uv[v] = new Vector2(col + 0f + textureBleedEpsilon, row + .5f - textureBleedEpsilon);
+        uv[v + 1] = new Vector2(col + .5f - textureBleedEpsilon, row + .5f - textureBleedEpsilon);
+        uv[v + 2] = new Vector2(col + .5f - textureBleedEpsilon, row + 0f + textureBleedEpsilon);
+        uv[v + 3] = new Vector2(col + 0f + textureBleedEpsilon, row + 0f + textureBleedEpsilon);
       }
     }
 
