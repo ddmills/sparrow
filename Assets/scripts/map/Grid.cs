@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using Sparrow.Utility;
+using Sparrow.Collections;
 
 namespace Sparrow.Map {
-  [ExecuteInEditMode]
   public class Grid : MonoBehaviour {
     public int chunkSize;
     public int tileSize;
@@ -10,13 +9,7 @@ namespace Sparrow.Map {
     private MultiKeyDictionary<int, int, Chunk> chunks = new MultiKeyDictionary<int, int, Chunk>();
 
     public void Clear() {
-      foreach (Chunk chunk in chunks.Values) {
-        if (Application.isEditor) {
-          Object.DestroyImmediate(chunk.gameObject);
-        } else {
-          Object.Destroy(chunk.gameObject);
-        }
-      }
+      transform.SafeDestroyAllChildren();
       chunks.Clear();
     }
 

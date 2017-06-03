@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Sparrow.Utility {
+namespace Sparrow.Collections {
   public class MultiKeyDictionary<K1, K2, V> : Dictionary<K1, Dictionary<K2, V>> {
 
     public V this[K1 key1, K2 key2] {

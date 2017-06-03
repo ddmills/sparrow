@@ -9,6 +9,11 @@ namespace Sparrow.Inspector {
     public override void OnInspectorGUI() {
       DrawDefaultInspector();
 
+      if (GUILayout.Button("Clear")) {
+        Grid map = (Grid) target;
+        map.Clear();
+      }
+
       if (GUILayout.Button("Generate")) {
         Grid map = (Grid) target;
         map.Clear();
@@ -16,11 +21,6 @@ namespace Sparrow.Inspector {
         map.GenerateChunk(1, 0);
         map.GenerateChunk(1, 1);
         map.GenerateChunk(0, 1);
-      }
-
-      if (GUILayout.Button("Clear")) {
-        Grid map = (Grid) target;
-        map.Clear();
       }
     }
   }
