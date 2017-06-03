@@ -4,11 +4,28 @@ namespace Sparrow.Map {
   [RequireComponent(typeof(MeshFilter))]
   [RequireComponent(typeof(MeshRenderer))]
   public class Chunk : MonoBehaviour {
+    private enum RED {
+      x = 0,
+      z = 1
+    }
+    private enum BLUE {
+      x = 1,
+      z = 1
+    }
+    private enum GREEN {
+      x = 0,
+      z = 0
+    }
+    private enum GRAY {
+      x = 1,
+      z = 0
+    }
+
     public float textureBleedEpsilon;
     public int x;
     public int z;
 
-    public void Generate(int chunkSize, int tileSize) {
+    public void Generate(int chunkX, int chunkZ, int chunkSize, int tileSize, int seed, float scaleFactor) {
       Mesh mesh = new Mesh();
 
       Vector3[] vertices = new Vector3[chunkSize * chunkSize * 4];
@@ -28,13 +45,35 @@ namespace Sparrow.Map {
           triangles[t + 2] = triangles[t + 4] = v + 2;
           triangles[t + 5] = v + 3;
 
-          float col = Random.Range(0, 2) * .5f;
-          float row = Random.Range(0, 2) * .5f;
+          float uvX = 0f;
+          float uvZ = 0f;
 
-          uv[v] = new Vector2(col + 0f + textureBleedEpsilon, row + .5f - textureBleedEpsilon);
-          uv[v + 1] = new Vector2(col + .5f - textureBleedEpsilon, row + .5f - textureBleedEpsilon);
-          uv[v + 2] = new Vector2(col + .5f - textureBleedEpsilon, row + 0f + textureBleedEpsilon);
-          uv[v + 3] = new Vector2(col + 0f + textureBleedEpsilon, row + 0f + textureBleedEpsilon);
+          float tileX = chunkX * chunkSize + i;
+          float tileZ = chunkZ * chunkSize + j;
+
+          float height = Mathf.PerlinNoise((seed * 1000 + tileX) / scaleFactor, (seed * 1000 + tileZ) / scaleFactor);
+
+          if (height < .25f) {
+            uvX = (float) RED.x;
+            uvZ = (float) RED.z;
+          } else if (height < .5f) {
+            uvX = (float) BLUE.x;
+            uvZ = (float) BLUE.z;
+          } else if (height < .75f) {
+            uvX = (float) GREEN.x;
+            uvZ = (float) GREEN.z;
+          } else {
+            uvX = (float) GRAY.x;
+            uvZ = (float) GRAY.z;
+          }
+
+          uvX *= .5f;
+          uvZ *= .5f;
+
+          uv[v] = new Vector2(uvX + 0f + textureBleedEpsilon, uvZ + .5f - textureBleedEpsilon);
+          uv[v + 1] = new Vector2(uvX + .5f - textureBleedEpsilon, uvZ + .5f - textureBleedEpsilon);
+          uv[v + 2] = new Vector2(uvX + .5f - textureBleedEpsilon, uvZ + 0f + textureBleedEpsilon);
+          uv[v + 3] = new Vector2(uvX + 0f + textureBleedEpsilon, uvZ + 0f + textureBleedEpsilon);
         }
       }
 

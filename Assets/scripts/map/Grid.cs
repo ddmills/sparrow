@@ -5,6 +5,8 @@ namespace Sparrow.Map {
   public class Grid : MonoBehaviour {
     public int chunkSize;
     public int tileSize;
+    public int seed;
+    public float scaleFactor;
     public Chunk chunkPrefab;
     private MultiKeyDictionary<int, int, Chunk> chunks = new MultiKeyDictionary<int, int, Chunk>();
 
@@ -18,9 +20,7 @@ namespace Sparrow.Map {
         Chunk chunk = (Chunk) Instantiate(chunkPrefab);
         chunk.transform.SetParent(transform);
         chunk.transform.position = getChunkOffset(x, z);
-        chunk.Generate(chunkSize, tileSize);
-        chunk.x = x;
-        chunk.z = z;
+        chunk.Generate(x, z, chunkSize, tileSize, seed, scaleFactor);
         chunks.Add(x, z, chunk);
       }
     }

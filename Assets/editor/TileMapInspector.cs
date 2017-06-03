@@ -17,10 +17,12 @@ namespace Sparrow.Inspector {
       if (GUILayout.Button("Generate")) {
         Grid map = (Grid) target;
         map.Clear();
-        map.GenerateChunk(0, 0);
-        map.GenerateChunk(1, 0);
-        map.GenerateChunk(1, 1);
-        map.GenerateChunk(0, 1);
+
+        for (int i = 0; i < 8; i++) {
+          for (int j = 0; j < 8; j++) {
+            map.GenerateChunk(i, j);
+          }
+        }
       }
     }
   }
