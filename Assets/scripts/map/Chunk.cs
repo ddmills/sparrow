@@ -37,17 +37,17 @@ namespace Sparrow.Map {
         for (int j = 0; j < chunkSize; j++, v += 4, t += 6) {
           float tileX = chunkX * chunkSize + i;
           float tileZ = chunkZ * chunkSize + j;
-          float rad = tileSize;
+          float intensity = tileSize * 10;
 
-          float tl = Mathf.PerlinNoise((seed * 1000 + tileX) / scaleFactor, (seed * 1000 + tileZ + rad) / scaleFactor) * 5;
-          float tr = Mathf.PerlinNoise((seed * 1000 + tileX + rad) / scaleFactor, (seed * 1000 + tileZ + rad) / scaleFactor) * 5;
-          float bl = Mathf.PerlinNoise((seed * 1000 + tileX) / scaleFactor, (seed * 1000 + tileZ) / scaleFactor) * 5;
-          float br = Mathf.PerlinNoise((seed * 1000 + tileX + rad) / scaleFactor, (seed * 1000 + tileZ) / scaleFactor) * 5;
+          float tl = Mathf.PerlinNoise((seed * 1000 + tileX) / scaleFactor, (seed * 1000 + tileZ + 1) / scaleFactor) * intensity;
+          float tr = Mathf.PerlinNoise((seed * 1000 + tileX + 1) / scaleFactor, (seed * 1000 + tileZ + 1) / scaleFactor) * intensity;
+          float br = Mathf.PerlinNoise((seed * 1000 + tileX) / scaleFactor, (seed * 1000 + tileZ) / scaleFactor) * intensity;
+          float bl = Mathf.PerlinNoise((seed * 1000 + tileX + 1) / scaleFactor, (seed * 1000 + tileZ) / scaleFactor) * intensity;
 
           vertices[v] = new Vector3(tileSize * i, tl, tileSize * (j + 1));
           vertices[v + 1] = new Vector3(tileSize * (i + 1), tr, tileSize * (j + 1));
-          vertices[v + 2] = new Vector3(tileSize * (i + 1), br, tileSize * j);
-          vertices[v + 3] = new Vector3(tileSize * i, bl, tileSize * j);
+          vertices[v + 2] = new Vector3(tileSize * (i + 1), bl, tileSize * j);
+          vertices[v + 3] = new Vector3(tileSize * i, br, tileSize * j);
 
           triangles[t] = triangles[t + 3] = v;
           triangles[t + 1] = v + 1;
