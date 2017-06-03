@@ -8,7 +8,7 @@ namespace Sparrow.Map {
     public int x;
     public int z;
 
-    public void Generate(int chunkSize) {
+    public void Generate(int chunkSize, int tileSize) {
       Mesh mesh = new Mesh();
 
       Vector3[] vertices = new Vector3[chunkSize * chunkSize * 4];
@@ -18,10 +18,10 @@ namespace Sparrow.Map {
 
       for (int i = 0, v = 0, t = 0; i < chunkSize; i++) {
         for (int j = 0; j < chunkSize; j++, v += 4, t += 6) {
-          vertices[v] = new Vector3(i, 0, j + 1);
-          vertices[v + 1] = new Vector3(i + 1, 0, j + 1);
-          vertices[v + 2] = new Vector3(i + 1, 0, j);
-          vertices[v + 3] = new Vector3(i, 0, j);
+          vertices[v] = new Vector3(tileSize * i, 0, tileSize * (j + 1));
+          vertices[v + 1] = new Vector3(tileSize * (i + 1), 0, tileSize * (j + 1));
+          vertices[v + 2] = new Vector3(tileSize * (i + 1), 0, tileSize * j);
+          vertices[v + 3] = new Vector3(tileSize * i, 0, tileSize * j);
 
           triangles[t] = triangles[t + 3] = v;
           triangles[t + 1] = v + 1;
