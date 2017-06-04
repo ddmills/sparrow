@@ -20,7 +20,7 @@ namespace Sparrow.Inspector {
 
         for (int i = 0; i < 8; i++) {
           for (int j = 0; j < 8; j++) {
-            map.GenerateChunk(i, j);
+            map.GetChunk(i, j);
           }
         }
       }

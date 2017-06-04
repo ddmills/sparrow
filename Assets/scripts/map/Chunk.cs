@@ -4,28 +4,11 @@ namespace Sparrow.Map {
   [RequireComponent(typeof(MeshFilter))]
   [RequireComponent(typeof(MeshRenderer))]
   public class Chunk : MonoBehaviour {
-    private enum RED {
-      x = 0,
-      z = 1
-    }
-    private enum BLUE {
-      x = 1,
-      z = 1
-    }
-    private enum GREEN {
-      x = 0,
-      z = 0
-    }
-    private enum GRAY {
-      x = 1,
-      z = 0
-    }
-
     public float textureBleedEpsilon;
     public int x;
     public int z;
 
-    public void Generate(int chunkX, int chunkZ, int chunkSize, int tileSize, int seed, float scaleFactor) {
+    public void Generate(int chunkX, int chunkZ, int chunkSize, int tileSize, int seed, float scaleFactor, float amplitude) {
       Mesh mesh = new Mesh();
 
       Vector3[] vertices = new Vector3[chunkSize * chunkSize * 4];
@@ -37,7 +20,7 @@ namespace Sparrow.Map {
         for (int j = 0; j < chunkSize; j++, v += 4, t += 6) {
           float tileX = chunkX * chunkSize + i;
           float tileZ = chunkZ * chunkSize + j;
-          float intensity = tileSize * 10;
+          float intensity = amplitude * scaleFactor;
 
           float tl = Mathf.PerlinNoise((seed * 1000 + tileX) / scaleFactor, (seed * 1000 + tileZ + 1) / scaleFactor) * intensity;
           float tr = Mathf.PerlinNoise((seed * 1000 + tileX + 1) / scaleFactor, (seed * 1000 + tileZ + 1) / scaleFactor) * intensity;
@@ -60,21 +43,18 @@ namespace Sparrow.Map {
           float height = Mathf.PerlinNoise((seed * 1000 + tileX) / scaleFactor, (seed * 1000 + tileZ) / scaleFactor);
 
           if (height < .25f) {
-            uvX = (float) RED.x;
-            uvZ = (float) RED.z;
+            uvX = 0;
+            uvZ = .5f;
           } else if (height < .5f) {
-            uvX = (float) BLUE.x;
-            uvZ = (float) BLUE.z;
+            uvX = (float) .5f;
+            uvZ = (float) .5f;
           } else if (height < .75f) {
-            uvX = (float) GREEN.x;
-            uvZ = (float) GREEN.z;
+            uvX = (float) 0f;
+            uvZ = (float) 0f;
           } else {
-            uvX = (float) GRAY.x;
-            uvZ = (float) GRAY.z;
+            uvX = (float) .5f;
+            uvZ = (float) 0;
           }
-
-          uvX *= .5f;
-          uvZ *= .5f;
 
           uv[v] = new Vector2(uvX + 0f + textureBleedEpsilon, uvZ + .5f - textureBleedEpsilon);
           uv[v + 1] = new Vector2(uvX + .5f - textureBleedEpsilon, uvZ + .5f - textureBleedEpsilon);
