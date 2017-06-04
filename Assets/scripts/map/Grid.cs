@@ -16,6 +16,10 @@ namespace Sparrow.Map {
       chunks.Clear();
     }
 
+    public float Height(float x, float y) {
+      return Mathf.PerlinNoise((seed * 1000 + x) / scaleFactor, (seed * 1000 + y) / scaleFactor);
+    }
+
     public Chunk GetChunk(int chunkX, int chunkZ) {
       if (chunks.ContainsKey(chunkX, chunkZ)) {
         return chunks[chunkX][chunkZ];
@@ -24,7 +28,7 @@ namespace Sparrow.Map {
       Chunk chunk = (Chunk) Instantiate(chunkPrefab);
       chunk.transform.SetParent(transform);
       chunk.transform.position = getChunkOffset(chunkX, chunkZ);
-      chunk.Generate(chunkX, chunkZ, chunkSize, tileSize, seed, scaleFactor, amplitude);
+      chunk.Generate(this, chunkX, chunkZ);
       chunks.Add(chunkX, chunkZ, chunk);
       return chunk;
     }
