@@ -39,7 +39,7 @@ namespace Sparrow.Map {
           float uvX = 0f;
           float uvZ = 0f;
 
-          float height = grid.Height(tileX, tileZ);
+          float height = grid.NormalizedHeight(tileX, tileZ);
 
           if (height < .25f) {
             uvX = 0;

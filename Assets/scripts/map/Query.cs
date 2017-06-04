@@ -16,8 +16,8 @@ namespace Sparrow.Map {
     }
 
     public float Height(int tileX, int tileZ) {
-      float perlinX = (grid.seed * 1000 + tileX) / grid.scaleFactor;
-      float perlinZ = (grid.seed * 1000 + tileZ) / grid.scaleFactor;
+      float perlinX = (grid.seed * 1000 + tileX) / grid.scale;
+      float perlinZ = (grid.seed * 1000 + tileZ) / grid.scale;
       return Mathf.PerlinNoise(perlinX, perlinZ);
     }
   }

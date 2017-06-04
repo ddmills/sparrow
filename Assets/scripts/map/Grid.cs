@@ -7,7 +7,8 @@ namespace Sparrow.Map {
     public int tileSize;
     public int seed;
     public float amplitude;
-    public float scaleFactor;
+    public float scale;
+    public float floor;
     public Chunk chunkPrefab;
     public MultiKeyDictionary<int, int, Chunk> chunks = new MultiKeyDictionary<int, int, Chunk>();
 
@@ -16,8 +17,21 @@ namespace Sparrow.Map {
       chunks.Clear();
     }
 
-    public float Height(float x, float y) {
-      return Mathf.PerlinNoise((seed * 1000 + x) / scaleFactor, (seed * 1000 + y) / scaleFactor);
+    public float Height(float x, float z) {
+      float baseHeight = floor * amplitude;
+      float height = NormalizedHeight(x, z);
+
+      if (height < floor) {
+        return floor * amplitude - baseHeight;// * height;
+      }
+
+      return (height * amplitude) - baseHeight;
+    }
+
+    public float NormalizedHeight(float x, float z) {
+      float perlinX = (seed * 1000 + x) / scale;
+      float perlinZ = (seed * 1000 + z) / scale;
+      return Mathf.PerlinNoise(perlinX, perlinZ);
     }
 
     public Chunk GetChunk(int chunkX, int chunkZ) {
