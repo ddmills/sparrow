@@ -31,7 +31,7 @@ namespace Sparrow.Component {
     void Update() {
       if (step >= 0) {
         Vector3 waypoint = path[step];
-        if (Vector3.Distance(transform.position, waypoint) > epsilon) {
+        if (transform.Distance(waypoint) > epsilon) {
           transform.position = Vector3.MoveTowards(transform.position, waypoint, speed * Time.deltaTime);
           transform.forward = Vector3.RotateTowards(transform.forward, waypoint - transform.position, rotSpeed * Time.deltaTime, .0f);
         } else {
