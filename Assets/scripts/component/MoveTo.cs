@@ -7,20 +7,20 @@ namespace Sparrow.Component {
   public class MoveTo : MonoBehaviour {
     public World world;
     public float speed;
+    public float rotSpeed;
     public float epsilon;
     public Transform target;
-    private int currentNode;
-    private Vector3 currentTarget;
+    private int step;
     List<Vector3> path;
     public GameObject pathMarker;
 
     void Start () {
-      currentNode = -1;
+      step = -1;
 
       path = world.GetPath(transform.position, target.transform.position);
 
       if (path.Count > 0) {
-        currentNode = 0;
+        step = 0;
       }
 
       path.ForEach((pos) => {
@@ -29,14 +29,15 @@ namespace Sparrow.Component {
     }
 
     void Update() {
-      if (currentNode >= 0) {
-        Vector3 currentTarget = path[currentNode];
-        if (Vector3.Distance(transform.position, currentTarget) > epsilon) {
-          transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+      if (step >= 0) {
+        Vector3 waypoint = path[step];
+        if (Vector3.Distance(transform.position, waypoint) > epsilon) {
+          transform.position = Vector3.MoveTowards(transform.position, waypoint, speed * Time.deltaTime);
+          transform.forward = Vector3.RotateTowards(transform.forward, waypoint - transform.position, rotSpeed * Time.deltaTime, .0f);
         } else {
-          currentNode++;
-          if (currentNode >= path.Count) {
-            currentNode = -1;
+          step++;
+          if (step >= path.Count) {
+            step = -1;
           }
         }
       }

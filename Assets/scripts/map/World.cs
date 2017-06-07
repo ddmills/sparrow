@@ -98,12 +98,11 @@ namespace Sparrow.Map {
       List<Vector3> realPath = new List<Vector3>();
 
       path.ForEach((position) => {
-        Debug.Log(position);
         realPath.Add(
           new Vector3(
-            GetTileCoordinate(position.x) + .5f,
+            GetTileCoordinate(position.x) + (float) tileSize / 2,
             0,
-            GetTileCoordinate(position.y) + .5f
+            GetTileCoordinate(position.y) + (float) tileSize / 2
           )
         );
       });
