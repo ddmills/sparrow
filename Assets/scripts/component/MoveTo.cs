@@ -16,8 +16,6 @@ namespace Sparrow.Component {
 
     void Start () {
       currentNode = -1;
-      Debug.Log(transform.position);
-      Debug.Log(target.transform.position);
 
       path = world.GetPath(transform.position, target.transform.position);
 
@@ -26,7 +24,6 @@ namespace Sparrow.Component {
       }
 
       path.ForEach((pos) => {
-        // Debug.Log(pos.x + "+" + pos.z);
         Instantiate(pathMarker, pos, Quaternion.identity);
       });
     }
