@@ -68,7 +68,10 @@ namespace Sparrow.Map {
             Mountain mountain = (Mountain) Instantiate(mountainPrefab);
             mountain.transform.position = new Vector3(world.tileSize * tileX + .5f, world.floor, world.tileSize * tileZ + .5f);
             mountain.transform.SetParent(transform);
-            // mountains.Add(tileX, tileZ, mountain);
+            mountains.Add(tileX, tileZ, mountain);
+            world.SetUnWalkable(tileX, tileZ);
+          } else {
+            world.SetWalkable(tileX, tileZ);
           }
         }
       }

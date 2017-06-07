@@ -9,21 +9,21 @@ namespace Sparrow.Inspector {
     public override void OnInspectorGUI() {
       DrawDefaultInspector();
 
-      if (GUILayout.Button("Clear")) {
-        World map = (World) target;
-        map.Clear();
-      }
+      // if (GUILayout.Button("Clear")) {
+      //   World map = (World) target;
+      //   map.Clear();
+      // }
 
-      if (GUILayout.Button("Generate")) {
-        World map = (World) target;
-        map.Clear();
+      // if (GUILayout.Button("Generate")) {
+      //   World map = (World) target;
+      //   map.Clear();
 
-        for (int i = 0; i < 8; i++) {
-          for (int j = 0; j < 8; j++) {
-            map.GetChunk(i, j);
-          }
-        }
-      }
+      //   for (int i = 0; i < 8; i++) {
+      //     for (int j = 0; j < 8; j++) {
+      //       map.GetChunk(i, j);
+      //     }
+      //   }
+      // }
     }
   }
 }

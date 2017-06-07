@@ -24,5 +24,9 @@ namespace Sparrow {
       }
       return transform;
     }
+
+    public static float Distance(this Transform transform, Vector3 target) {
+      return Vector3.Distance(transform.position, target);
+    }
   }
 }
