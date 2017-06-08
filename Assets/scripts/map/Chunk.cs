@@ -69,9 +69,9 @@ namespace Sparrow.Map {
             mountain.transform.position = new Vector3(world.tileSize * tileX + .5f, world.floor, world.tileSize * tileZ + .5f);
             mountain.transform.SetParent(transform);
             mountains.Add(tileX, tileZ, mountain);
-            world.SetUnWalkable(tileX, tileZ);
+            Systems.instance.pathing.SetUnWalkable(tileX, tileZ);
           } else {
-            world.SetWalkable(tileX, tileZ);
+            Systems.instance.pathing.SetWalkable(tileX, tileZ);
           }
         }
       }

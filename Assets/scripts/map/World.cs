@@ -14,13 +14,9 @@ namespace Sparrow.Map {
     public float floor;
     public Chunk chunkPrefab;
     public MultiKeyDictionary<int, int, Chunk> chunks;
-    private BaseGrid pathing;
-    JumpPointParam jpParam;
 
     void Awake() {
       chunks = new MultiKeyDictionary<int, int, Chunk>();
-      pathing = new StaticGrid(mapSize * chunkSize, mapSize * chunkSize);
-      jpParam = new JumpPointParam(pathing, true, DiagonalMovement.OnlyWhenNoObstacles);
 
       for (int i = 0; i < mapSize; i++) {
         for (int j = 0; j < mapSize; j++) {
@@ -51,31 +47,6 @@ namespace Sparrow.Map {
       return Mathf.PerlinNoise(perlinX, perlinZ);
     }
 
-    public void SetWalkable(int tileX, int tileZ) {
-      pathing.SetWalkableAt(new GridPos(tileX, tileZ), true);
-    }
-
-    public void SetUnWalkable(int tileX, int tileZ) {
-      pathing.SetWalkableAt(new GridPos(tileX, tileZ), false);
-    }
-
-    public List<Vector3> GetPath(Vector3 start, Vector3 end) {
-      return GetPath(
-        GetTileCoordinate(start.x),
-        GetTileCoordinate(start.z),
-        GetTileCoordinate(end.x),
-        GetTileCoordinate(end.z)
-      );
-    }
-
-    public List<Vector3> GetPath(int startX, int startZ, int endX, int endZ) {
-      GridPos start = new GridPos(startX, startZ);
-      GridPos end = new GridPos(endX, endZ);
-      jpParam.Reset(start, end);
-      List<GridPos> path = JumpPointFinder.FindPath(jpParam);
-      return PathToRealCoordinates(path);
-    }
-
     public Chunk GetChunk(int chunkX, int chunkZ) {
       if (chunks.ContainsKey(chunkX, chunkZ)) {
         return chunks[chunkX][chunkZ];
@@ -92,22 +63,6 @@ namespace Sparrow.Map {
     private Vector3 getChunkOffset(int x, int z) {
       float offset = (chunkSize * tileSize);
       return new Vector3(x * offset, 0, z * offset);
-    }
-
-    private List<Vector3> PathToRealCoordinates(List<GridPos> path) {
-      List<Vector3> realPath = new List<Vector3>();
-
-      path.ForEach((position) => {
-        realPath.Add(
-          new Vector3(
-            GetTileCoordinate(position.x) + (float) tileSize / 2,
-            0,
-            GetTileCoordinate(position.y) + (float) tileSize / 2
-          )
-        );
-      });
-
-      return realPath;
     }
 
     public int GetTileCoordinate(float coordinate) {

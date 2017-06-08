@@ -21,7 +21,7 @@ namespace Sparrow.Component {
     public bool SetGoal(Vector3 goal, float epsilon = .02f) {
       this.epsilon = epsilon;
       step = -1;
-      path = world.GetPath(transform.position, goal);
+      path = Systems.instance.pathing.GetPath(transform.position, goal);
 
       if (path.Count > 0) {
         reachedGoal = false;
