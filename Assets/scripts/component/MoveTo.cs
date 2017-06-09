@@ -11,11 +11,11 @@ namespace Sparrow.Component {
     public Transform goal;
     private int step;
     private List<Vector3> path;
-    public GameObject pathMarker;
     public bool reachedGoal;
 
     void Start() {
-      SetGoal(goal.position);
+      step = -1;
+      reachedGoal = false;
     }
 
     public bool SetGoal(Vector3 goal, float epsilon = .02f) {

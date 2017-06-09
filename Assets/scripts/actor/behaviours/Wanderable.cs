@@ -5,13 +5,10 @@ using Sparrow.Component;
 namespace Sparrow.Actor.Behavior {
   public class Wanderable : MonoBehaviour {
     public MoveTo moveTo;
-    public float wanderRadius;
-    public float wanderDelay;
+    public int wanderRadius;
+    public float wanderDelayMin;
+    public float wanderDelayMax;
     private IEnumerator coroutine;
-
-    void Start() {
-      moveTo = GetComponent<MoveTo>();
-    }
 
     public void Wander() {
       coroutine = GoToRandom();
@@ -24,8 +21,9 @@ namespace Sparrow.Actor.Behavior {
 
     private IEnumerator GoToRandom() {
       while(true) {
-        // moveTo.RandomInRange(transform.position, wanderRadius, 1 << 9);
-        yield return new WaitForSeconds(wanderDelay);
+        Vector3 target = Systems.instance.pathing.walkableWithinRadius(transform.position, wanderRadius);
+        moveTo.SetGoal(target);
+        yield return new WaitForSeconds(Random.Range(wanderDelayMin, wanderDelayMax));
       }
     }
   }

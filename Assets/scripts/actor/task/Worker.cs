@@ -6,6 +6,10 @@ namespace Sparrow.Actor.Task {
     public Queue queue;
     public Task task;
 
+    void Start() {
+      queue = Systems.instance.taskQueue;
+    }
+
     private void Update () {
       queue.AssignTask(this);
       if (task != null) {
@@ -31,8 +35,7 @@ namespace Sparrow.Actor.Task {
     }
 
     public Task GetDefaultTask(Queue queue) {
-      // return new Wander(queue);
-      return null;
+      return new Wander(queue);
     }
 
     public float Weight(Task task) {
